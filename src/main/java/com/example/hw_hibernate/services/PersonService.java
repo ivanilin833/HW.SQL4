@@ -2,29 +2,29 @@ package com.example.hw_hibernate.services;
 
 import com.example.hw_hibernate.model.Person;
 import com.example.hw_hibernate.model.PersonInfo;
-import com.example.hw_hibernate.repository.PersonJpaRepository;
+import com.example.hw_hibernate.repository.PersonQueryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PersonService {
-    private final PersonJpaRepository repository;
+    private final PersonQueryRepository repository;
 
-    public PersonService(PersonJpaRepository repository) {
+    public PersonService(PersonQueryRepository repository) {
         this.repository = repository;
     }
 
     public List<Person> getPersonsByCity(String city) {
-        return repository.findAllByCityOfLiving(city);
+        return repository.findPersonsIsCityOfLiving(city);
     }
 
     public List<Person> getPersonsByAge(int age) {
-        return repository.findAllByIdAgeLessThanOrderByIdAgeAsc(age);
+        return repository.findPersonsAgeLessThanOrderByIdAge(age);
     }
 
     public Person getPersonByFullName(String name, String surname) {
-        return repository.findByIdNameAndIdSurname(name, surname)
+        return repository.findPersonsWithNameAndSurname(name, surname)
                 .orElseThrow();
     }
 
