@@ -1,7 +1,7 @@
 package com.example.hw_hibernate.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

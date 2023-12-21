@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface PersonJpaRepository extends CrudRepository<Person, PersonInfo> {
     List<Person> findAllByCityOfLiving(String cityOfLiving);
+
     List<Person> findAllByIdAgeLessThanOrderByIdAgeAsc(int age);
+
     Optional<Person> findByIdNameAndIdSurname(String name, String surname);
 }
