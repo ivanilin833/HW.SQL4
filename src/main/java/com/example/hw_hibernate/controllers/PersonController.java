@@ -4,8 +4,11 @@ import com.example.hw_hibernate.model.Person;
 import com.example.hw_hibernate.model.PersonInfo;
 import com.example.hw_hibernate.services.PersonService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,7 @@ public class PersonController {
         this.service = service;
     }
 
+    @RolesAllowed(value = "ROLE_WRITE")
     @GetMapping("/root/by-city")
     public List<Person> getPersonsById (@RequestParam String city){
 
@@ -40,7 +44,7 @@ public class PersonController {
 
         return service.getPersonById(name, surname, age);
     }
-
+    @Secured(value = "ROLE_READ")
     @GetMapping("/persons")
     public ResponseEntity<List<Person>> getAll(){
         return ResponseEntity.ok(service.getAllPersons());
@@ -51,9 +55,16 @@ public class PersonController {
         return service.savePerson(person);
     }
 
+    @PreAuthorize("hasRole('ROLE_WRITE') or hasRole('ROLE_DELETE')")
     @DeleteMapping("/root")
     public List<Person> deletePersonById(@RequestBody PersonInfo id){
         service.deletePersonById(id);
         return service.getAllPersons();
+    }
+
+    @GetMapping("/persons/name")
+    @PreAuthorize("#username == authentication.principal.username")
+    public String testMethod(@RequestParam String username){
+        return username;
     }
 }
